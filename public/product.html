@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Product Details</h1>
+
+  <div class="container">
+    <button onclick="logout()">Logout</button>
+    <a href="index.html">Back to Products</a>
+
+    <div id="product"></div>
+    <button onclick="addToCart()">Add to Cart</button>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "login.html";
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+
+    function load() {
+      fetch(`/products/${id}`)
+        .then(res => res.json())
+        .then(p => {
+          document.getElementById("product").innerHTML = `
+            <h2>${p.name}</h2>
+            <p>${p.description}</p>
+            <p><strong>Price:</strong> EGP ${p.price}</p>
+          `;
+        });
+    }
+
+    function addToCart() {
+      fetch("/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ product_id: id, quantity: 1 })
+      })
+      .then(res => res.json())
+      .then(data => alert(data.message || "Added to cart"));
+    }
+
+    load();
+  </script>
+</body>
+</html>

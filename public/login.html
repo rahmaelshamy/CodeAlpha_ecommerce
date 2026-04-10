@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | CodeAlpha E-commerce App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>CodeAlpha E-commerce Platform</h1>
+  <p>Mini full-stack e-commerce app</p>
+
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p id="message"></p>
+    <a href="register.html">Don't have an account? Register</a>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          document.getElementById("message").innerText = "Login successful";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        } else {
+          document.getElementById("message").innerText = data.message || "Login failed";
+        }
+      } catch (error) {
+        document.getElementById("message").innerText = "Something went wrong";
+      }
+    });
+  </script>
+</body>
+</html>

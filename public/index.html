@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Products | CodeAlpha E-commerce App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>CodeAlpha E-commerce Platform</h1>
+  <p>Mini full-stack e-commerce app</p>
+
+  <div class="container">
+    <button onclick="logout()">Logout</button>
+    <h2>Products</h2>
+    <a href="cart.html">Go to Cart</a>
+    <div id="products"></div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "login.html";
+    }
+
+    fetch("/products")
+      .then(res => res.json())
+      .then(data => {
+        const div = document.getElementById("products");
+        div.innerHTML = "";
+
+        data.forEach(p => {
+          div.innerHTML += `
+            <div class="product">
+              <h3>${p.name}</h3>
+              <p>${p.description}</p>
+              <p><strong>Price:</strong> EGP ${p.price}</p>
+              <button onclick="view(${p.id})">View Details</button>
+              <button onclick="add(${p.id})">Add to Cart</button>
+            </div>
+          `;
+        });
+      });
+
+    function view(id) {
+      window.location.href = `product.html?id=${id}`;
+    }
+
+    function add(id) {
+      fetch("/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ product_id: id, quantity: 1 })
+      })
+      .then(res => res.json())
+      .then(data => alert(data.message || "Added to cart"));
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

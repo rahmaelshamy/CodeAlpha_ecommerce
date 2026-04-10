@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart | CodeAlpha E-commerce App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>CodeAlpha E-commerce Platform</h1>
+  <p>Your shopping cart</p>
+
+  <div class="container">
+    <button onclick="logout()">Logout</button>
+    <h2>Cart</h2>
+    <a href="index.html">Back to Products</a>
+    <div id="cart"></div>
+    <button onclick="order()">Place Order</button>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+
+    function load() {
+      fetch("/cart", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        const div = document.getElementById("cart");
+        div.innerHTML = "";
+
+        if (data.length === 0) {
+          div.innerHTML = "<p>Your cart is empty.</p>";
+          return;
+        }
+
+        data.forEach(i => {
+          div.innerHTML += `
+            <div class="product">
+              <h3>${i.name}</h3>
+              <p>Quantity: ${i.quantity}</p>
+              <p>Price: EGP ${i.price}</p>
+            </div>
+          `;
+        });
+      });
+    }
+
+    function order() {
+      fetch("/order", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message || "Order placed");
+        load();
+      });
+    }
+
+    load();
+  </script>
+</body>
+</html>
