@@ -10,9 +10,13 @@
   <p>Mini full-stack e-commerce app</p>
 
   <div class="container">
-    <button onclick="logout()">Logout</button>
+  <div style="display:flex; justify-content: space-between; align-items:center;">
     <h2>Products</h2>
-    <a href="cart.html">Go to Cart</a>
+    <div>
+      <a href="cart.html">Cart</a>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
     <div id="products"></div>
   </div>
 
@@ -34,6 +38,8 @@
             <div class="product">
               <h3>${p.name}</h3>
               <p>${p.description}</p>
+              <img src="images/${p.name.toLowerCase()}.jpg" 
+                  style="width:100%; border-radius:8px; margin-bottom:10px;" />
               <p><strong>Price:</strong> EGP ${p.price}</p>
               <button onclick="view(${p.id})">View Details</button>
               <button onclick="add(${p.id})">Add to Cart</button>

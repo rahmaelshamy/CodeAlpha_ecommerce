@@ -1,0 +1,93 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 32px;
+}
+
+p {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* Top actions */
+.container a,
+.container button {
+  margin-right: 10px;
+}
+
+/* Product Grid */
+#products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Product Card */
+.product {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #eee;
+  transition: 0.3s ease;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.product h3 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.product p {
+  text-align: left;
+  margin: 5px 0;
+}
+
+/* Buttons */
+button {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: none;
+  background: #111;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #333;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+}
+
+/* Cart Items */
+.product p strong {
+  color: #000;
+}
